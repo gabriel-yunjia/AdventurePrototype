@@ -37,14 +37,13 @@ class farmHouse extends AdventureScene {
                     onComplete: () => key.destroy()
                 });
             })
-        let key1 = this.add.text(this.w * 0.5, this.w * 0.5, "🔑 key1")
+        let waterFaucet = this.add.text(this.w * 0.5, this.w * 0.5, "🚰Water Faucet")
             .setFontSize(this.s * 2)
             .setInteractive()
             .on('pointerover', () => {
-                this.showMessage("key for the ga1te.", false)
+                this.showMessage("I can get water from here, but how?", false)
             })
             .on('pointerdown', () => {
-                this.gainItem('key1');
                 this.tweens.add({
                     targets: key1,
                     y: `-=${2 * this.s}`,
@@ -69,8 +68,8 @@ class farmHouse extends AdventureScene {
                 if (this.hasItem("key")) {
                     this.loseItem("key");
                     this.showMessage("*squeak*");
-                    field1Gate.setText("🚪 unlocked door");
-                    this.gotoScene('demo2');
+                    field1Gate.setText("🚪 unlocked gate");
+                    this.gotoScene('field1');
                 }
             })
         let cowBarn = this.add.text(this.w * 0.5, this.w * 0.3, "🚪 Gate to Barn")
@@ -81,16 +80,16 @@ class farmHouse extends AdventureScene {
             })
             .on('pointerdown', () => {
                     this.showMessage("*squeak*");
-                    this.gotoScene('Barn');
+                    this.gotoScene('barn');
                 
             })
 
     }
 }
 
-class Barn extends AdventureScene {
+class barn extends AdventureScene {
     constructor() {
-        super("Barn", "Barn");
+        super("barn", "Barn");
     }
     onEnter() {
         this.add.text(this.w * 0.3, this.w * 0.4, "🚪 Gate to Farmhouse")
@@ -123,34 +122,60 @@ class Barn extends AdventureScene {
 
 
 
-class Demo2 extends AdventureScene {
+class field1 extends AdventureScene {
     constructor() {
-        super("demo2", "The second room has a long name (it truly does).");
+        super("field1", "Green grass covers the field here.");
     }
     onEnter() {
-        this.add.text(this.w * 0.3, this.w * 0.4, "just go back")
+        this.add.text(this.w * 0.5, this.w * 0.3, "🚪 Gate to Farmhoue")
             .setFontSize(this.s * 2)
             .setInteractive()
             .on('pointerover', () => {
-                this.showMessage("You've got no other choice, really.");
+                this.showMessage("Go back to the farmhouse.");
             })
             .on('pointerdown', () => {
                 this.gotoScene('farmHouse');
             });
 
-        let finish = this.add.text(this.w * 0.6, this.w * 0.2, '(finish the game)')
+        let sheeps = this.add.text(800, this.w * 0.2, '🐑Sheep')
+            .setFontSize(this.s * 2)
             .setInteractive()
             .on('pointerover', () => {
-                this.showMessage('*giggles*');
-                this.tweens.add({
-                    targets: finish,
-                    x: this.s + (this.h - 2 * this.s) * Math.random(),
-                    y: this.s + (this.h - 2 * this.s) * Math.random(),
-                    ease: 'Sine.inOut',
-                    duration: 500
-                });
+                this.showMessage(Math.round(sheeps.x));
+
             })
             .on('pointerdown', () => this.gotoScene('outro'));
+            
+
+
+
+            this.tweens.add({
+                targets: sheeps,
+                x: -5,
+                ease: 'Linear',
+                duration: 1000,
+                onUpdate: function(tween, target){
+                    if(target.x <= 200){
+                        tween.stop();
+                        greenGrass.destroy()
+                    }
+                }
+            })
+            
+         
+            
+        let greenGrass = this.add.text(200, this.w * 0.2, '🌱Grass')
+            .setFontSize(this.s * 2)
+            .setInteractive()
+            .on('pointerover', () => {
+                this.showMessage(greenGrass.x);
+
+            })
+            .on('pointerdown', () => this.gotoScene('outro'));
+            
+
+
+
     }
 }
 
@@ -187,7 +212,7 @@ const game = new Phaser.Game({
         width: 1920,
         height: 1080
     },
-    scene: [Intro, farmHouse, Barn, Demo2, Outro],
+    scene: [Intro, farmHouse, barn, field1, Outro],
     title: "Adventure Game",
 });
 
