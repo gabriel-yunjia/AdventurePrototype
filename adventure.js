@@ -54,7 +54,7 @@ class AdventureScene extends Phaser.Scene {
 
     }
 
-    //I changed showMessage a little bit for the "Note" at the beginning of the game so it doesn't fade away. 
+    //I changed showMessage's paramaters for the "Note" at the beginning of the game so it doesn't fade away. 
     showMessage(message, stayforever = false) {
         this.messageBox.setText(message);
         if(stayforever == true){
