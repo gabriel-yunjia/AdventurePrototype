@@ -25,7 +25,8 @@ class AdventureScene extends Phaser.Scene {
             .setStyle({ fontSize: `${3 * this.s}px` })
             .setWordWrapWidth(this.w * 0.25 - 2 * this.s);
         
-        this.messageBox = this.add.text(this.w * 0.75 + this.s, this.h * 0.33)
+        //made the message box a little bit higher. 
+        this.messageBox = this.add.text(this.w * 0.75 + this.s, this.h * 0.23)
             .setStyle({ fontSize: `${2 * this.s}px`, color: '#eea' })
             .setWordWrapWidth(this.w * 0.25 - 2 * this.s);
 
@@ -53,14 +54,24 @@ class AdventureScene extends Phaser.Scene {
 
     }
 
-    showMessage(message) {
+    //I changed showMessage a little bit for the "Note" at the beginning of the game so it doesn't fade away. 
+    showMessage(message, stayforever = false) {
         this.messageBox.setText(message);
+        if(stayforever == true){
         this.tweens.add({
             targets: this.messageBox,
-            alpha: { from: 1, to: 0 },
+            alpha: { from: 1, to: 1 },
             easing: 'Quintic.in',
             duration: 4 * this.transitionDuration
-        });
+        
+        })}
+        else{
+            this.tweens.add({
+                targets: this.messageBox,
+                alpha: { from: 1, to: 0 },
+                easing: 'Quintic.in',
+                duration: 4 * this.transitionDuration
+        })};
     }
 
     updateInventory() {
